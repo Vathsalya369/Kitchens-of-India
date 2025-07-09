@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'foodie.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}")
+    'default': dj_database_url.config(default=os.getenv("postgresql://kitchens_db_user:o4lM0te7osKrooljS10aijyqnT4u3fPY@dpg-d1n4l1uuk2gs739i0dhg-a/kitchens_db"))
 }
 
 # DATABASES = {
