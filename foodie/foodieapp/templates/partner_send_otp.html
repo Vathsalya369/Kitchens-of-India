@@ -1,0 +1,183 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Partner with Foodie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #fffaf2;
+        }
+
+        .header {
+            background-color: #ffc107;
+            padding: 30px 20px;
+            text-align: center;
+            color: #212529;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .header p {
+            font-size: 18px;
+        }
+
+        .main {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 40px 20px;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .form-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            max-width: 400px;
+            flex: 1;
+        }
+
+        .form-card h3 {
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #d35400;
+        }
+
+        .form-control {
+            height: 48px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 2px solid #ffc107;
+        }
+
+        .form-control:focus {
+            border-color: #ff8c00;
+            box-shadow: 0 0 6px rgba(255, 140, 0, 0.4);
+        }
+
+        .btn-orange {
+            background-color: #ffa500;
+            border: none;
+            font-weight: bold;
+            font-size: 16px;
+            height: 45px;
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .btn-orange:hover {
+            background-color: #ff8c00;
+        }
+
+        .steps-card {
+            max-width: 400px;
+            flex: 1;
+        }
+
+        .step {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .step h5 {
+            margin-bottom: 5px;
+            color: #ff8c00;
+            font-weight: bold;
+        }
+
+        .step p {
+            margin: 0;
+            color: #555;
+        }
+
+        .footer-note {
+            font-size: 13px;
+            margin-top: 20px;
+            color: #666;
+            text-align: center;
+        }
+
+        a {
+            color: #d35400;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .main {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Partner with Foodie</h1>
+        <p>Grow your restaurant online and reach more customers</p>
+    </div>
+
+    <div class="main">
+        <!-- OTP Form -->
+        <div class="form-card">
+            <h3>Login to Get Started</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Mobile Number or Restaurant ID</label>
+                    <input type="text" name="phone" class="form-control" placeholder="+91XXXXXXXXXX" required>
+                </div>
+                <button type="submit" class="btn btn-orange w-100">Send OTP</button>
+            </form>
+            <div class="footer-note">
+                By logging in, you agree to Foodie’s <a href="#">Terms & Conditions</a>.
+            </div>
+        </div>
+
+        <!-- Steps / Info -->
+        <div class="steps-card">
+            <div class="step">
+                <h5>Step 1</h5>
+                <p>Install the Foodie Owner App</p>
+            </div>
+            <div class="step">
+                <h5>Step 2</h5>
+                <p>Login/Register using your phone</p>
+            </div>
+            <div class="step">
+                <h5>Step 3</h5>
+                <p>Enter your restaurant details</p>
+            </div>
+
+            <div class="step">
+                <h5>Required Documents:</h5>
+                <p>✔ FSSAI License – <a href="https://foscos.fssai.gov.in/apply-for-lic-and-reg">Apply here</a></p>
+                <p>✔ Menu PDF/Image</p>
+                <p>✔ GSTIN – <a href="https://services.gst.gov.in/services/searchtp">Apply here</a></p>
+                <p>✔ PAN Card</p>
+                <p>✔ Bank Account Details</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

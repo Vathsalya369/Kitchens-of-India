@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Category</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        body {
+            background: linear-gradient(to right, #fceabb, #f8b500);
+            min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .navbar {
+            background: linear-gradient(to right, #fff4e6, #ffe1b3);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #ff7f00 !important;
+        }
+
+        .nav-link {
+            color: #4e4e4e !important;
+        }
+
+        .nav-link:hover {
+            color: #ff7f00 !important;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+        }
+
+        .btn-warning {
+            background-color: #ffb300;
+            border: none;
+        }
+
+        .btn-warning:hover {
+            background-color: #ffa000;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 🔶 Navbar -->
+<nav class="navbar navbar-expand-lg px-4 shadow-sm">
+    <a class="navbar-brand fs-4" href="#">Kitchens of India</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbardiv" aria-controls="navbardiv" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbardiv">
+        <ul class="navbar-nav fw-semibold align-items-center gap-3">
+            <li class="nav-item"><a class="nav-link" href="{% url 'staticWebsite' %}#home">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'staticWebsite' %}#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'staticWebsite' %}#services">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'staticWebsite' %}#contact">Contact</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Signup</a></li>
+            <li class="nav-item">
+                <a class="nav-link px-3 py-1 rounded-pill border border-dark text-dark" href="{% url 'partner_send_otp' %}">
+                    Partner with us
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- 🔶 Form Section -->
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="glass-card w-100" style="max-width: 500px;">
+        <h3 class="text-center mb-4 text-warning">➕ Add New Category</h3>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="d-grid mt-3">
+                <button type="submit" class="btn btn-warning">Add Category</button>
+            </div>
+        </form>
+
+        <div class="mt-4 text-center">
+            <a href="{% url 'add_menu' restaurant.id %}" class="btn btn-outline-secondary">← Back to Menu</a>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

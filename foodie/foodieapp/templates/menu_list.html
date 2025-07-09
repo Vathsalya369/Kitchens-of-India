@@ -1,0 +1,547 @@
+{% extends "menu_list_main.html" %}
+{% load static cart_extras %}
+{% load cart_tags %}
+
+{% block content_navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-warning px-4" id="home">
+    <a class="navbar-brand fw-bold fs-4" href="#">Kitchens of India</a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbardiv" aria-controls="navbardiv" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbardiv">
+        <ul class="navbar-nav fw-semibold align-items-center gap-2">
+            <li class="nav-item"><a class="nav-link" href="{% url 'staticWebsite' %}#home">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'staticWebsite' %}#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'staticWebsite' %}#services">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'staticWebsite' %}#contact">Contact</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Signup</a></li>
+            <li class="nav-item">
+  <a class="nav-link position-relative" href="{% url 'view_cart' %}">
+    🛒 Cart
+    {% if cart_count > 0 %}
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        {{ cart_count }}
+      </span>
+    {% endif %}
+  </a>
+</li>
+
+<li class="nav-item">
+  <a class="nav-link px-3 py-1 rounded-pill border border-dark text-dark" href="{% url 'partner_send_otp' %}">
+    Partner with us
+  </a>
+</li>
+
+        </ul>
+    </div>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+
+{%block content_list%}
+<style>
+    body {
+    background-color: #fff9e6;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 10px;
+}
+
+.menu-title {
+    text-align: center;
+    color: #d35400;
+    margin-bottom: 40px;
+}
+
+.category-title {
+    color: #444;
+    margin: 40px 0 20px;
+    font-size: 20px;
+}
+
+.items-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.menu-card {
+    display: flex;
+    background-color: #fff3cd;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    align-items: center;
+}
+
+.menu-img {
+    width: 120px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.menu-img.placeholder {
+    background-color: #eee;
+}
+
+.menu-details {
+    flex: 1;
+}
+
+.menu-name {
+    margin: 0;
+    color: #e67e22;
+    font-size: 18px;
+}
+
+.menu-desc {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.menu-price {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.menu-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-qty {
+    background-color: #ffa500;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.qty-count {
+    font-weight: bold;
+    font-size: 14px;
+    color: #ffa500;
+    border: 2px solid #ffa500;
+    padding: 4px 10px;
+    min-width: 50px;
+    text-align: center;
+    border-radius: 5px; 
+    background-color: white;
+}
+.menu-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-add {
+    background-color: white;
+    color: #ffa500;
+    border: 2px solid #ffa500;
+    font-weight: bold;
+    padding: 5px 12px;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.qty-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.qty-count {
+    font-weight: bold;
+    font-size: 16px;
+    min-width: 24px;
+    text-align: center;
+}
+
+.btn-qty {
+    background-color: #ffa500;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    cursor: pointer;
+}
+.veg-dot {
+    color: green;
+    font-size: 18px;
+    margin-right: 6px;
+}
+.nonveg-dot {
+    color: red;
+    font-size: 18px;
+    margin-right: 6px;
+}
+.category-float-bar {
+    position: fixed;
+    top: 120px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: linear-gradient(to bottom, #ffeaa7, #fff); /* Soft orange-yellow fade */
+    padding: 14px;
+    border-radius: 20px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    max-height: 70vh;
+    overflow-y: auto;
+    border: 1px solid #f5cd79;
+}
+
+.category-link {
+    padding: 10px 20px;
+    border-radius: 30px;
+    background-color: #fefefe;
+    color: #6d4c41;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: 0.3s ease;
+    white-space: nowrap;
+}
+
+.category-link:hover {
+    background-color: #f0932b;
+    color: white;
+}
+
+.category-link.active {
+    background-color: #eb4d4b;
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+@media (max-width: 768px) {
+    .category-float-bar {
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        left: 0;
+        right: 0;
+        flex-direction: row;
+        justify-content: start;
+        overflow-x: auto;
+        overflow-y: hidden;
+        max-height: none;
+        padding: 10px;
+        background: linear-gradient(to right, #ffeaa7, #fff);
+        border-top: 1px solid #f5cd79;
+        border-radius: 0;
+        box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+    }
+
+    .category-link {
+        flex: 0 0 auto;
+        margin-right: 10px;
+        padding: 8px 14px;
+        font-size: 13px;
+        border-radius: 20px;
+        white-space: nowrap;
+    }
+}
+.mobile-category-toggle {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #f0932b;
+    border-radius: 50%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 1000;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-category-toggle span {
+    width: 22px;
+    height: 2.5px;
+    background-color: white;
+    border-radius: 1px;
+}
+
+/* Show toggle button only on small screens */
+@media (max-width: 768px) {
+    .mobile-category-toggle {
+        display: flex;
+    }
+
+    .category-float-bar {
+        display: none; /* hidden by default */
+    }
+
+    .category-float-bar.show {
+        display: flex; /* shown when toggled */
+    }
+}
+/* 📱 Mobile Devices (≤576px) */
+@media (max-width: 576px) {
+    .menu-container {
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .menu-title {
+        font-size: 20px;
+        margin-bottom: 25px;
+    }
+
+    .category-title {
+        font-size: 16px;
+        margin: 30px 0 15px;
+    }
+
+    .items-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .menu-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px;
+    }
+
+    .menu-img {
+        width: 100%;
+        height: 160px;
+        margin: 0 0 12px 0;
+    }
+
+    .menu-details {
+        width: 100%;
+    }
+
+    .menu-name {
+        font-size: 16px;
+    }
+
+    .menu-desc {
+        font-size: 13px;
+    }
+
+    .menu-price {
+        font-size: 15px;
+    }
+
+    .btn-add, .btn-qty {
+        font-size: 14px;
+        padding: 4px 10px;
+        width: auto;
+        height: auto;
+    }
+
+    .qty-count {
+        font-size: 14px;
+        min-width: 40px;
+        padding: 4px 8px;
+    }
+
+    .menu-actions {
+        justify-content: flex-start;
+    }
+}
+
+/* 💻 Tablets (≤768px) */
+@media (max-width: 768px) {
+    .items-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-img {
+        width: 100px;
+        height: 90px;
+    }
+
+    .menu-name {
+        font-size: 17px;
+    }
+
+    .menu-desc {
+        font-size: 14px;
+    }
+
+    .menu-price {
+        font-size: 15px;
+    }
+
+    .btn-add, .btn-qty {
+        font-size: 15px;
+    }
+
+    .qty-count {
+        font-size: 15px;
+        min-width: 44px;
+    }
+}
+
+</style>
+    <div class="menu-container">
+        <h2 class="menu-title">Menu - {{ restaurant.name }}</h2>
+        <div style="display: flex; justify-content: center; gap: 1.5rem; margin: 20px 0;">
+            <span style="background-color: #ffeaa7; color: #d35400; padding: 8px 16px; border-radius: 25px; font-weight: 600;">⭐ Rating: {{ restaurant.rating }}</span>
+            <span style="background-color: #dff9fb; color: #0984e3; padding: 8px 16px; border-radius: 25px; font-weight: 600;">📍 {{ restaurant.address }}</span>
+            <span style="background-color: #fab1a0; color: #6d214f; padding: 8px 16px; border-radius: 25px; font-weight: 600;">⏱️ {{ restaurant.delivery_time }}</span>
+        </div>
+        {% if is_partner and item.id %}
+<form method="POST" action="{% url 'delete_menu_item' item.id %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-sm btn-danger mt-2">🗑️ Delete</button>
+</form>
+{% endif %}
+
+
+
+
+        <div class="category-float-bar">
+            {% for category, items in grouped_menu.items %}
+                <a href="#{{ category|slugify }}" class="category-link">{{ category }}</a>
+            {% endfor %}
+        </div>
+
+
+        {% for category, items in grouped_menu.items %}
+            <h3 id="{{ category|slugify }}" class="category-title">{{ category }}</h3>
+            <div class="items-grid">
+                {% for item in items %}
+                <div class="menu-card">
+                    {% if item.image %}
+                        <img src="{{ item.image.url }}" alt="{{ item.name }}" class="menu-img">
+                    {% else %}
+                        <div class="menu-img placeholder"></div>
+                    {% endif %}
+                    <div class="menu-details">
+                        <h5 class="menu-name">
+                            {% if item.is_vegetarian %}
+                            <span style="color: green;">&#9679;</span>
+                            {% else %}
+                            <span style="color: red;">&#9679;</span>
+                            {% endif %}
+                            {{ item.name }}
+                            {% if item.is_popular %}
+                            <span style="color: #6e2c00; font-size: 14px;">Bestseller</span>
+                            {% endif %}
+                        </h5>
+                        <p class="menu-desc">{{ item.description }}</p>
+                        <p class="menu-price">₹{{ item.price }}</p>
+                    </div>
+                    <div class="menu-actions" data-item-id="{{ item.id }}">
+                        {% if cart|get_item:item.id %}
+                        <div class="qty-control" id="qty-box-{{ item.id }}">
+                            <button class="btn-qty btn-decrease" data-item-id="{{ item.id }}">-</button>
+                            <span class="qty-count" id="qty-{{ item.id }}">{{ cart|get_item:item.id }}</span>
+                            <button class="btn-qty btn-increase" data-item-id="{{ item.id }}">+</button>
+                        </div>
+                        <button class="btn-add" id="add-btn-{{ item.id }}" style="display: none;" data-item-id="{{ item.id }}">ADD</button>
+                        {% else %}
+                        <div class="qty-control" id="qty-box-{{ item.id }}" style="display: none;">
+                            <button class="btn-qty btn-decrease" data-item-id="{{ item.id }}">-</button>
+                            <span class="qty-count" id="qty-{{ item.id }}">1</span>
+                            <button class="btn-qty btn-increase" data-item-id="{{ item.id }}">+</button>
+                        </div>
+                        <button class="btn-add" id="add-btn-{{ item.id }}" data-item-id="{{ item.id }}">ADD</button>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="mobile-category-toggle" id="categoryToggleBtn">
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+
+
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const csrfToken = "{{ csrf_token }}";
+
+    function updateCart(itemId, action) {
+        fetch("{% url 'update_cart_ajax' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken
+            },
+            body: JSON.stringify({
+                item_id: itemId,
+                action: action
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            const qtyBox = document.getElementById(`qty-box-${itemId}`);
+            const addBtn = document.getElementById(`add-btn-${itemId}`);
+            const qtyCount = document.getElementById(`qty-${itemId}`);
+            if (data.qty > 0) {
+                qtyCount.textContent = data.qty;
+                qtyBox.style.display = "flex";
+                addBtn.style.display = "none";
+            } else {
+                qtyBox.style.display = "none";
+                addBtn.style.display = "inline-block";
+            }
+
+            // Optional: Update cart icon count
+            const badge = document.querySelector(".badge");
+            if (badge) badge.textContent = data.cart_count;
+            if (data.cart_count === 0 && action === "clear") {
+                location.reload();
+            }
+        });
+    }
+
+    document.querySelectorAll(".btn-add").forEach(btn => {
+        btn.addEventListener("click", function () {
+            const itemId = this.dataset.itemId;
+            updateCart(itemId, "add");
+        });
+    });
+
+    document.querySelectorAll(".btn-increase").forEach(btn => {
+        btn.addEventListener("click", function () {
+            const itemId = this.dataset.itemId;
+            updateCart(itemId, "increase");
+        });
+    });
+
+    document.querySelectorAll(".btn-decrease").forEach(btn => {
+        btn.addEventListener("click", function () {
+            const itemId = this.dataset.itemId;
+            updateCart(itemId, "decrease");
+        });
+    });
+});
+</script>
+{%endblock%}

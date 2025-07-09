@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Menu - {{ restaurant.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #fef9f1;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 20px;
+        }
+
+        .container-box {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 700px;
+            margin: auto;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+
+        h2.title {
+            text-align: center;
+            font-weight: 600;
+            color: #d35400;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #6d4c41;
+        }
+
+        .form-control, .form-select {
+            border-radius: 12px;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .btn-submit {
+            background-color: #e67e22;
+            color: white;
+            font-weight: bold;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        .menu-list {
+            margin-top: 40px;
+        }
+
+        .menu-card {
+            background-color: #fff3cd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+
+        .menu-card h5 {
+            margin: 0;
+            color: #e67e22;
+        }
+
+        .menu-card small {
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-warning px-4" id="home">
+    <a class="navbar-brand fw-bold fs-4" href="#">Kitchens of India</a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbardiv" aria-controls="navbardiv" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbardiv">
+        <ul class="navbar-nav fw-semibold align-items-center gap-2">
+            <li class="nav-item"><a class="nav-link" href="{% url 'staticWebsite' %}#home">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'staticWebsite' %}#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'staticWebsite' %}#services">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'staticWebsite' %}#contact">Contact</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Signup</a></li>
+            <li class="nav-item"><a class="nav-link px-3 py-1 rounded-pill border border-dark text-dark" href="{% url 'partner_send_otp' %}">Partner with us</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-box">
+    <h2 class="title">Add Menu Item - {{ restaurant.name }}</h2>
+
+    <!-- Menu Item Add Form -->
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-submit">Add Item</button>
+            <a href="{% url 'menu' restaurant.id %}" class="btn btn-secondary ms-2">Back to Menu</a>
+            <a href="{% url 'add_category' restaurant.id %}" class="btn btn-outline-warning ms-2">+ Add Category</a>
+        </div>
+    </form>
+
+    {% if menu_items %}
+    <div class="menu-list">
+        <h4 class="text-center mt-5 mb-4">🍽️ Existing Items</h4>
+        {% for item in menu_items %}
+        <div class="menu-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5>{{ item.name }} - ₹{{ item.price }}</h5>
+                    <small>Category: {{ item.category.name }}</small><br>
+                    <small>{{ item.description|default:"No description" }}</small>
+                </div>
+                {% if is_partner %}
+<form method="POST" action="{% url 'delete_menu_item' item.id %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-sm btn-danger">🗑️ Delete</button>
+</form>
+{% endif %}
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>

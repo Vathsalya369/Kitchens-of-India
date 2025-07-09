@@ -1,0 +1,170 @@
+{% extends "restaurant_list_main.html" %}
+{% load static %}
+
+{% block content_navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-warning px-4" id="home">
+    <a class="navbar-brand fw-bold fs-4" href="#">Kitchens of India</a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbardiv" aria-controls="navbardiv" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbardiv">
+        <ul class="navbar-nav fw-semibold align-items-center gap-2">
+            <li class="nav-item"><a class="nav-link" href="{% url 'staticWebsite' %}#home">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'staticWebsite' %}#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'staticWebsite' %}#services">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'staticWebsite' %}#contact">Contact</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Signup</a></li>
+            <li class="nav-item"><a class="nav-link px-3 py-1 rounded-pill border border-dark text-dark" href="{% url 'partner_send_otp' %}">Partner with us</a></li>
+        </ul>
+    </div>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+
+{% block content_cards %}
+<style>
+    body {
+        background-color: #fff9e6;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .add-restaurant-container {
+        max-width: 650px;
+        margin: 60px auto;
+        background: linear-gradient(135deg, #fff6d5, #fff3cd);
+        border-radius: 20px;
+        padding: 40px 30px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .add-restaurant-container h2 {
+        text-align: center;
+        font-weight: 700;
+        font-size: 28px;
+        color: #d35400;
+        margin-bottom: 25px;
+    }
+
+    .add-restaurant-container label {
+        font-weight: 600;
+        color: #6e2c00;
+        display: block;
+        margin-top: 20px;
+        margin-bottom: 5px;
+    }
+
+    .add-restaurant-container input,
+    .add-restaurant-container select,
+    .add-restaurant-container textarea {
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid #ffc107;
+        font-size: 15px;
+        background-color: #fff;
+    }
+
+    .add-restaurant-container button {
+        margin-top: 30px;
+        width: 100%;
+        padding: 12px;
+        border: none;
+        background-color: #ffa500;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 30px;
+    }
+
+    .restaurant-list {
+        max-width: 900px;
+        margin: 40px auto;
+    }
+
+    .restaurant-card {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .restaurant-img {
+        width: 100px;
+        height: 80px;
+        border-radius: 10px;
+        object-fit: cover;
+    }
+
+    .restaurant-details {
+        flex: 1;
+    }
+
+    .restaurant-details h5 {
+        margin: 0;
+        color: #d35400;
+    }
+
+    .restaurant-details small {
+        color: #6c757d;
+    }
+
+    .btn-delete {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+</style>
+
+<div class="add-restaurant-container">
+    <h2>🍽️ Add Your Restaurant</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-info text-center">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+{% if restaurants %}
+<div class="restaurant-list">
+    <h4 class="text-center mb-4">🏪 Your Restaurants</h4>
+    {% for r in restaurants %}
+    <div class="restaurant-card">
+        {% if r.image %}
+        <img src="{{ r.image.url }}" class="restaurant-img" alt="{{ r.name }}">
+        {% else %}
+        <div class="restaurant-img" style="background-color: #eee;"></div>
+        {% endif %}
+        <div class="restaurant-details">
+            <h5>{{ r.name }}</h5>
+            <small>📍 {{ r.address }}</small><br>
+            <small>⏱️ {{ r.delivery_time }} | ⭐ {{ r.rating }}</small>
+        </div>
+        {% if request.session.partner_logged_in %}
+<form method="POST" action="{% url 'delete_restaurant' r.id %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-delete">🗑️ Delete</button>
+</form>
+{% endif %}
+
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

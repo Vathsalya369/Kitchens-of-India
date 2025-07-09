@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify OTP - Foodie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fff8f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .otp-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .otp-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fc8019;
+            font-weight: 600;
+        }
+
+        .form-control {
+            height: 45px;
+            font-size: 16px;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-control:focus {
+            border-color: #ff8c00;
+            box-shadow: 0 0 5px rgba(255, 140, 0, 0.4);
+        }
+
+        .btn-orange {
+            background-color: #fc8019;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            height: 45px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-orange:hover {
+            background-color: #e67300;
+        }
+
+        .note {
+            font-size: 13px;
+            color: #777;
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="otp-container">
+        <h2>Enter OTP</h2>
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="otp" class="form-control" placeholder="Enter the OTP sent to your mobile" required>
+            <button type="submit" class="btn-orange">Verify OTP</button>
+        </form>
+        <div class="note">Didn’t receive the OTP? <a href="#">Resend</a></div>
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

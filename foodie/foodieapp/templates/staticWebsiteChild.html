@@ -1,0 +1,617 @@
+{% extends "staticWebsiteParent.html" %}
+{%load static%}
+
+{%block title%} Foodie {%endblock%}
+
+{% block content_navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-warning px-4" id="home">
+   <a class="navbar-brand fw-bold fs-4" href="#">Kitchens of India</a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbardiv" aria-controls="navbardiv" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbardiv">
+        <ul class="navbar-nav fw-semibold align-items-center gap-2">
+            <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Signup</a></li>
+            <li class="nav-item"><a class="nav-link px-3 py-1 rounded-pill border border-dark text-dark" href="{% url 'partner_send_otp' %}">Partner with us</a></li>
+        </ul>
+    </div>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+
+{%block content_about%}
+
+<style>
+    .about_div {
+        background-image: url("{% static 'I/i4.jpg' %}");
+        background-size: cover;
+        height: 80vh;
+        font-family: Arial, Helvetica, sans-serif;
+        color:white;
+        text-align: center;
+        align-items: center;
+        padding-top:10%;
+    }
+    .container:hover{
+        color:#F5E663;
+        font-weight: bold;
+        backdrop-filter: blur(10px);
+        padding:1rem;
+        border-radius: 20px;
+        transition: 0.3s ease-in-out;
+    }
+    /* Phones (max-width: 576px) */
+@media (max-width: 576px) {
+    .about_div {
+        height: auto;
+        padding: 20% 10px;
+        background-position: center;
+        font-size: 1rem;
+    }
+
+    .container:hover {
+        padding: 0.8rem;
+        font-size: 1rem;
+        border-radius: 15px;
+    }
+}
+
+/* Tablets (max-width: 768px) */
+@media (max-width: 768px) {
+    .about_div {
+        height: auto;
+        padding: 15% 20px;
+        font-size: 1.1rem;
+    }
+
+    .container:hover {
+        padding: 1rem;
+        font-size: 1.1rem;
+    }
+}
+
+</style>
+
+<div class="about_div" id="about">
+    <div class="container">
+        <h2>Delicious Food at Your Doorstep</h2>
+        <p>In today's fast-paced world, food delivery apps are changing how we experience dining.</p>
+        <p>Gone are the days of waiting in line or making phone calls to place an order. With just a few taps, Foodie brings your favorite meals directly to your door. Whether you're craving comfort food, exotic dishes, or even a healthy meal, we offer convenience, variety, and efficiency like never before.</p>
+        <a href="#services" class="btn btn-warning">Explore Our Services</a>
+    </div>
+</div>
+{%endblock%}
+
+{% block content_services %}
+
+<script src="https://kit.fontawesome.com/4b6aa53f80.js" crossorigin="anonymous"></script>
+
+<div id="services" class="services">
+    <nav class="navbar bg-body-warning">
+        <div class="container-fluid">
+            <form class="d-flex" method="GET" role="search">
+                <input class="form-control me-2 search" type="search" name="search" placeholder="Search Location" aria-label="Search"/>
+                <button class="btn btn-outline-warning search_button" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    {% if show_alert %}
+    <script>
+        alert("Sorry, service is not available in '{{search_query|escapejs|safe}}'. ");
+    </script>
+    {% endif %}
+
+    <div class="cards_class" style="display: flex;flex-direction: row;flex-wrap: wrap;margin: 15px; gap:2rem;justify-content: center;">
+        {% for city in cities %}
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">{{city.name}}</h3>
+                <a href="{% url 'restaurant_list' city.name %}" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        {% endfor %}        
+
+        <!-- <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Amaravati</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Itanagar</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Dispur</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Patna</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Raipur</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Panaji</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Gandhinagar</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Chandigarh</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Shimla</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Ranchi</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Banglore</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Thiruvananthapuram</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Bhopal</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Mumbai</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Imphal</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Shillong</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Aizawl</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Kohima</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Bhubaneswar</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Chandigarh</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Jaipur</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Gangtok</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Chennai</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Hyderabad</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Agartala</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Dehradun</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Lunknow</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body card1" style="display: flex;flex-direction: row;justify-content: space-around;">
+                <h3 class="card-title">Kolkota</h3>
+                <a href="#" class="card-text"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>-->
+    </div>
+</div>
+{% endblock %}
+
+{%block content_contact%}
+
+<script src="https://kit.fontawesome.com/4b6aa53f80.js" crossorigin="anonymous"></script>
+<style>
+    @media (max-width: 576px) {
+    .contact > div:first-child {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .card2 {
+        margin: 15px 0;
+        width: 90%;
+        justify-content: center;
+    }
+
+    .contact1 {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .contact1 > div {
+        margin-left: 0 !important;
+    }
+
+    .contact_ui li a {
+        font-size: 14px;
+    }
+}
+
+/* MD: Medium devices (tablets) */
+@media (max-width: 768px) {
+    .contact > div:first-child {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card2 {
+        margin: 10px 0;
+        width: 70%;
+        justify-content: center;
+    }
+
+    .contact1 {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .contact1 > div {
+        margin-left: 0 !important;
+    }
+}
+
+</style>
+<div class="contact" id="contact">
+    <div style="display: flex;">
+        <h2 style="padding-top:30px;">For better experience, download the Foodie app now!!</h2>
+        <div class="card2">
+            <div>
+                <a href="https://play.google.com/store/games?hl=en" style="text-decoration: none;color: white"><i class="fa-brands fa-google-play"></i></a>
+            </div>
+            <div>
+                <h5 class="card-text">Get it on</h5>
+                <h3 class="card-title" style="color:white;">Google Play</h3>
+            </div>
+        </div>
+        <div class="card2">
+            <div>
+                <a href="https://www.apple.com/in/app-store/" style="text-decoration: none;color: white"><i class="fa-brands fa-app-store"></i></a>
+            </div>
+            <div>
+                <h5 class="card-text">Get it on</h5>
+                <h3 class="card-title" style="color: white;">App Store</h3>
+            </div>
+        </div>
+    </div>
+    <div class="contact1">
+        <div>
+            <ul class="contact_ui">
+                <li class="active" style="font-weight: bold;color: black;"><a href="#home">Contact Us</a></li>
+                <li><a href="#">Help and Support</a></li>
+                <li><a href="#">Partner with us</a></li>
+                <li><a href="#">Ride with us</a></li>
+            </ul>
+        </div>
+        <div>
+            <ul class="contact_ui">
+                <li class="active" style="font-weight: bold;color: black;"><a href="#">Company</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Foodie Corporate</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Team</a></li>
+            </ul>
+        </div>
+        <div>
+            <ul class="contact_ui">
+                <li class="active" style="font-weight: bold;color: black;"><a href="#">Legal</a></li>
+                <li><a href="#">Terms and Conditions</a></li>
+                <li><a href="#">Cookie Policy</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Investor Relations</a></li>
+            </ul>
+        </div>
+        <div style="margin-left:60px;">
+            <h6 style="font-weight: bold;">Social Links</h6>
+            <div>
+                <a href="#" style="color: black;font-size: x-large;"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" style="color: black;font-size: x-large;"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="#" style="color: black;font-size: x-large;"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" style="color: black;font-size: x-large;"><i class="fa-brands fa-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
+
+{% block content_signup %}
+<style>
+    body {
+        background-color: #fff9e6;
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    form {
+        background-color: #fff;
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 30px 25px;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .heading {
+        text-align: center;
+        color: #d35400;
+        margin-bottom: 25px;
+        font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border: 2px solid #ffc107;
+        border-radius: 10px;
+        font-size: 15px;
+        outline: none;
+        transition: 0.3s;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+        border-color: #ff8c00;
+        box-shadow: 0 0 5px rgba(255, 140, 0, 0.4);
+    }
+
+    span {
+        color: red;
+        font-size: 13px;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .checkbox-container {
+        margin: 10px 0;
+        font-size: 14px;
+    }
+
+    label {
+        margin-left: 5px;
+        color: #555;
+    }
+
+    .power-container {
+        height: 8px;
+        background-color: #eee;
+        border-radius: 6px;
+        margin: 5px 0 20px;
+        overflow: hidden;
+    }
+
+    #power-point {
+        height: 100%;
+        width: 0;
+        background-color: #ccc;
+        transition: width 0.3s, background-color 0.3s;
+    }
+
+    button {
+        width: 100%;
+        background-color: #ffa500;
+        color: white;
+        font-weight: bold;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #ff8c00;
+    }
+
+    p {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+    p a {
+        color: #d35400;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    p a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<form onsubmit="return registerUser()">
+            <h2 class="heading">Registration Form</h2>
+            <!--name-->
+            <input type="text" id="name" placeholder="Full Name" required>
+            <span id="nameError"></span>
+            <!--email-->
+            <input type="email" id="email" placeholder="Email" required>
+            <span id="emailError"></span>
+            <!--password-->
+            <input type="password" id="password" oninput="checkPasswordStrength()" placeholder="password" required>
+            <div class="checkbox-container">
+                <input type="checkbox" id="showPassword" onclick="passwordToggle()">
+                <label for="showPassword">Show Password</label>
+            </div>
+            <span id="passwordError"></span>
+            <label for="power-point">Strength of password</label>
+            <div class="power-container">
+                <div id="power-point"></div>
+            </div>
+            <button type="submit" onclick="check()">Register</button>
+            <p>Already have an account?<a href="login.html">login here</a></p>
+        </form>
+    <script>
+        function registerUser(){
+            let name=document.getElementById("name").value;
+            let email=document.getElementById("email").value;
+            let password=document.getElementById("password").value;
+            if(name.length<3){
+                document.getElementById("nameError").innerText="name must be at least 3 characters";
+                return false;
+
+            }else{
+                document.getElementById("nameError").innerText="";
+            }
+            let emailPattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if(!emailPattern.test(email)){
+                document.getElementById("emailError").innerText="invalid email format";
+                return false;
+            }else{
+                document.getElementById("emailError").innerText="";
+            }
+            if(password.length<6){
+                document.getElementById("passwordError").innerText="password must be at least 6 characters";
+                return false;
+            }else{
+                document.getElementById("passwordError").innerText="";
+            }
+            //localStorage.clear();
+            let users=JSON.parse(localStorage.getItem("users"))||[];
+            let isEmailRegistered=users.some(u=>u.email===email);
+            if(isEmailRegistered){
+                alert("Already registered.Please login");
+                window.location.href="login.html";
+                return false;
+            }
+            users.push({name,email,password});
+            localStorage.setItem("users",JSON.stringify(users));
+            alert("Register successfull! please login");
+            window.location.href="login.html";
+            return false;
+        }
+
+        
+        //let password = document.getElementById("password");
+        let power = document.getElementById("power-point");
+        password.oninput = function () {
+        let point = 0;
+        let value = password.value;
+        let widthPower = ["1%", "25%", "50%", "75%", "100%"];
+        let colorPower = ["#D73F40", "#DC6551", "#F2B84F", "#BDE952", "#3ba62f"];
+
+        if (value.length >= 6) {
+            let arrayTest = [/[0-9]/, /[a-z]/, /[A-Z]/, /[^0-9a-zA-Z]/];
+            arrayTest.forEach((item) => {
+            if (item.test(value)) {
+                point += 1;
+            }
+        });
+        }
+        power.style.width = widthPower[point];
+        power.style.backgroundColor = colorPower[point];
+    }
+        function passwordToggle(){
+            var x=document.getElementById("password");
+            if(x.type==="password"){
+                x.type="text";
+            }
+            else{
+                x.type="password";
+            }
+        }
+    </script>
+{% endblock %}
