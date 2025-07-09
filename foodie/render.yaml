@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: foodieapp
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn Foodie.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: Foodie.settings
+      - key: SECRET_KEY
+        sync: false
