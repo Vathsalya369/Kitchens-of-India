@@ -33,8 +33,6 @@ whitenoise==6.9.0
 yarl==1.20.1
 cloudinary
 django-cloudinary-storage
-
-=======
 aiohappyeyeballs==2.6.1
 aiohttp==3.12.13
 aiohttp-retry==2.9.1
@@ -71,4 +69,3 @@ yarl==1.20.1
 cloudinary
 django-cloudinary-storage
 
->>>>>>> 630b03e (Fixed static dir and applied migrations)
