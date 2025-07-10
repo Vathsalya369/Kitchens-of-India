@@ -31,3 +31,6 @@ urllib3==2.5.0
 virtualenv==20.30.0
 whitenoise==6.9.0
 yarl==1.20.1
+cloudinary
+django-cloudinary-storage
+
