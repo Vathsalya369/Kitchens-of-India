@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 
@@ -56,7 +57,8 @@ class MenuItem(models.Model):
     category=models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     name=models.CharField(max_length=100)
     price=models.DecimalField(max_digits=6, decimal_places=2)
-    image=models.ImageField(upload_to="menu_items/", blank=True)
+    # image=models.ImageField(upload_to="menu_items/", blank=True)
+    image = CloudinaryField('image')
     description=models.TextField(blank=True)
     is_vegetarian = models.BooleanField(default=False)  # Veg/Non-veg indicator
     is_available = models.BooleanField(default=True)  # Availability
