@@ -28,4 +28,36 @@
         <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
     </body>
+=======
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{%block title%} {%endblock%}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'css/bootstrap-grid.css' %}">
+        <link rel="stylesheet" href="{% static 'css/bootstrap-grid.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/bootstrap-reboot.css' %}">
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/bootstrap-reboot.min.css' %}">
+        <link rel="stylesheet" href="{% static 'styles.css'%}">
+        <script src="https://kit.fontawesome.com/4b6aa53f80.js" crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+        {% block content_navbar%} {%endblock%}
+        {% block content_about%} {%endblock%}
+        {% block content_services%} {%endblock%}
+        {%block content_contact%} {%endblock%}
+
+        <script src="{% static 'js/bootstrap.js' %}"></script>
+        <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    </body>
+>>>>>>> 630b03e (Fixed static dir and applied migrations)
 </html>
